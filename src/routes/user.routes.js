@@ -2,6 +2,7 @@ import { Router } from "express";
 import { changeCurrentpassword, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar, updateUserCoverImage } from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
+import { limiter } from "../middleware/ratelimit.middleware.js";
 
 
 const router = Router()
@@ -19,7 +20,7 @@ router.route("/register").post
             }
         ]),
         registerUser)
-router.route("/login").post(loginUser)
+router.route("/login").post( limiter, loginUser)
 
 // secured Route
 router.route("/logout").post(verifyJWT, logoutUser)
@@ -34,4 +35,4 @@ router.route("/c/:username").get(verifyJWT,getUserChannelProfile);
 router.route("/watch-history").get(verifyJWT,getWatchHistory);
 
 
-export default router
+export default router;
