@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser"
 
 const app = express()
 
+app.use(limiter)
+
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
@@ -16,8 +18,12 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
+
+
+
 // Routes import
 import userRouter from './routes/user.routes.js'
+import { limiter } from "./middleware/ratelimit.middleware.js"
 
 // routes declaration
 app.use("/api/v1/users",userRouter)
